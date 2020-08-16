@@ -1,0 +1,12 @@
+obj/
+main
+.DS_Store
+build/
+.vscode/
+out/
+*.so
+*.dll
+*.exe
+*.pyd
+*.o
+*.a
