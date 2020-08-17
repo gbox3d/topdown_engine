@@ -40,7 +40,9 @@ tDE_S_ObjectBase *tDE_Entity_createSprite(
     int x, int y, Uint16 nID,
     SDL_Rect srcRect,
     SDL_Texture *pTexture,
-    void (*pCallbackMouseDown)(void *))
+    void (*pCallbackMouseDown)(void *),
+    void (*pCallbackEvent)(void *,void *)
+    )
 {
     tDE_Entity_S_Sprite *pObj = SDL_malloc(sizeof(tDE_Entity_S_Sprite));
 
@@ -56,6 +58,7 @@ tDE_S_ObjectBase *tDE_Entity_createSprite(
     pObj->m_base.m_fpDoEvent = _doEvent;
 
     pObj->m_pCallbackMouseDown = pCallbackMouseDown;
+    pObj->m_pCallbackEvent = pCallbackEvent;
 
     return (void *)pObj;
 }

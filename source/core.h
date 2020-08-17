@@ -26,6 +26,8 @@ typedef struct _tde_s_base
   
 } tDE_S_ObjectBase;
 
+// typedef tDE_S_ObjectBase tDE_S_EntityBase;
+
 typedef struct __core
 {
     SDL_Window *m_pWin;
