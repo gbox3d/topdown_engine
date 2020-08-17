@@ -34,7 +34,7 @@ void callbackPush(void *ptr)
         tDE_S_Node *pnode = tDE_graph_FindNodeByEntity(NULL,pObj);
         if(pnode) {
             // printf("%d \n",pnode->m_pBody);
-            tDE_graph_remove_node(pnode,NULL);
+            tDE_graph_remove_node(pnode);
         }
     }
 }

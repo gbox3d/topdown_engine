@@ -12,6 +12,8 @@ typedef struct _S_sprite_
     void *m_pExtend; //확장기능 
 
     void (*m_pCallbackMouseDown)(void *);
+    void (*m_pCallbackEvent)(void *,void *);
+
 
 
 } tDE_Entity_S_Sprite;
@@ -22,7 +24,8 @@ tDE_S_ObjectBase *tDE_Entity_createSprite(
     int x, int y, Uint16 nID,
     SDL_Rect srcRect,
     SDL_Texture *pTexture,
-    void (*pCallbackMouseDown)(void *)
+    void (*pCallbackMouseDown)(void *),
+    void (*pCallbackEvent)(void *,void *)
     );
 
 #endif

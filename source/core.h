@@ -19,7 +19,6 @@ typedef struct _tde_s_base
   Uint16 m_nType; //오브잭트 구분하기 위한 형식 식별자 
   SDL_bool m_bVisible;
   Uint16 m_nID;  
-  Uint32 m_nNodeId;
   void (*m_fpDestory)(void *pObj);  
   void (*m_fpRender)(void *pObj, SDL_Renderer *pRender);
   void (*m_fpDoEvent)(void *pObj, SDL_Event *pEvt);

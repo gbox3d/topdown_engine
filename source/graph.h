@@ -17,7 +17,8 @@ typedef struct __tde_node__ {
 void tDE_graph_init();
 void tDE_graph_close();
 Uint32 tDE_graph_add_node(tDE_S_Node *pNode,tDE_S_Node *pParent);
-void tDE_graph_remove_node(tDE_S_Node *pNode,tDE_S_Node *pParent);
+//void tDE_graph_remove_node(tDE_S_Node *pNode,tDE_S_Node *pParent);
+void tDE_graph_remove_node(tDE_S_Node *pNode);
 
 void tDE_graph_Traverse(tDE_S_Node *pRoot,void (*callback)(void *node,void *),void *param);
 tDE_S_Node *tDE_graph_FindNodeByEntity(tDE_S_Node *pRoot,void *pEntity);

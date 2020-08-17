@@ -26,36 +26,42 @@ Uint32 tDE_graph_add_node(tDE_S_Node *pNode, tDE_S_Node *pParent)
     if (!pParent)
     {
         pParent = g_pRootNode;
+    }
 
-        if (!pParent->m_pChild)
-        {
-            pParent->m_pChild = pNode;
-            pNode->m_pParent = pParent;
-        }
-        else
-        {
-            //기존에 헤더노드가 존재하면 새로운 해더로 옹립하고 기존껀 뒤로 보내기
-            tDE_S_Node *_pChild = pParent->m_pChild;
+    if (!pParent->m_pChild)
+    {
+        pParent->m_pChild = pNode;
+        pNode->m_pParent = pParent;
+    }
+    else
+    {
+        //기존에 헤더노드가 존재하면 새로운 해더로 옹립하고 기존껀 뒤로 보내기
+        tDE_S_Node *_pChild = pParent->m_pChild;
 
-            pParent->m_pChild = pNode;
-            pNode->m_pParent = pParent;
-            pNode->m_pNext = _pChild;
-            _pChild->m_pPrev = pNode;
-        }
+        pParent->m_pChild = pNode;
+        pNode->m_pParent = pParent;
+        pNode->m_pNext = _pChild;
+        _pChild->m_pPrev = pNode;
     }
 
     return pNode->m_nID;
 }
 
-void tDE_graph_remove_node(tDE_S_Node *pNode, tDE_S_Node *pParent)
+void tDE_graph_remove_node(tDE_S_Node *pNode)
 {
-    if (!pParent)
-    {
-        pParent = g_pRootNode;
-    }
+    // if (!pParent)
+    // {
+    //     pParent = g_pRootNode;
+    // }
     // tDE_S_Node *_pParent = pParent;
+    tDE_S_Node *pParent = pNode->m_pParent;
+
+    //최상위는 삭제불가 
+    if(!pParent) return;
+
     tDE_S_Node *prev = pNode->m_pPrev;
     tDE_S_Node *next = pNode->m_pNext;
+
     if (!prev)
     {
         //만약 헤더라면
@@ -132,7 +138,6 @@ tDE_S_Node *tDE_graph_FindNodeByEntity(tDE_S_Node *pRoot, void *pEntity)
 
     return NULL;
 }
-
 
 tDE_S_Node *tDE_graph_FindNodeById(tDE_S_Node *pRoot, Uint32 nId)
 {

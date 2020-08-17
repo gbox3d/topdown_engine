@@ -37,8 +37,6 @@ int main(int argc, char *argv[])
         tDE_S_Node *pnode = tDE_graph_FindNodeByEntity(NULL, &(a[2]));
         printf("find by entity : %d\n", *((int *)(pnode->m_pEntity)));
     }
-
-   
 //아이디로 찾기
     {
         tDE_S_Node *pnode = tDE_graph_FindNodeById(NULL, ids[3] );
