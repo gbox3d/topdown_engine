@@ -10,3 +10,4 @@ out/
 *.pyd
 *.o
 *.a
+box2d/
