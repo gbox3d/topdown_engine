@@ -14,6 +14,13 @@ enum {
   TDE_TYPE_OBJ_BASIC
 };
 
+enum {
+  TDE_EVENT_BASE = SDL_USEREVENT + 1000,
+  TDE_EVENT_CMD_INPUT,
+  TDE_EVENT_GAME_LOOP
+};
+
+
 typedef struct _tde_s_base
 {
   Uint16 m_nType; //오브잭트 구분하기 위한 형식 식별자 
@@ -43,6 +50,8 @@ tDE_S_Core *tDE_setup_1(const char *szTitle,int WINDOW_WIDTH,int WINDOW_HEIGHT,U
 void tDE_closeCore(tDE_S_Core *pCore);
 
 SDL_Texture *tDE_util_loadTexture(tDE_S_Core *pCore, const char *filename);
+int tDE_util_doTokenize(char *szBuf, char (*szBufToken)[32]);
+void tDE_core_doCmdInput(SDL_Event *_event);
 
 
 #endif

@@ -32,7 +32,7 @@ tDE_S_Core *tDE_setup_1(const char *szTitle, int WINDOW_WIDTH, int WINDOW_HEIGHT
     if (TTF_Init() == -1)
     {
         printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
-        return SDL_FALSE;
+        return NULL;
     }
     else
     {
@@ -49,7 +49,7 @@ tDE_S_Core *tDE_setup_1(const char *szTitle, int WINDOW_WIDTH, int WINDOW_HEIGHT
         return NULL;
     }
 
-    printf("engine start in : %8d\n", time(NULL));
+    printf("engine start in : %8ld\n", time(NULL));
     srand(time(NULL));
 
     return pCore;
@@ -88,3 +88,76 @@ SDL_Texture *tDE_util_loadTexture(tDE_S_Core *pCore, const char *filename)
     SDL_FreeSurface(surface);
     return tex;
 }
+
+void tDE_core_doCmdInput(SDL_Event *_event)
+{
+    static char strBuf[128];
+    static Uint16 nInputFSM = 0;
+
+    if (nInputFSM == 0)
+    {
+        if (_event->type == SDL_KEYDOWN)
+        {
+            if (_event->key.keysym.sym == SDLK_RETURN)
+            {
+                printf("input msg : \n");
+                // SDL_StartTextInput();
+                nInputFSM = 1;
+            }
+        }
+    }
+    else if (nInputFSM == 1)
+    {
+        if (_event->type == SDL_KEYDOWN)
+        {
+            if (_event->key.keysym.sym == SDLK_RETURN)
+            {
+                // printf("input msg : \n");
+                // SDL_StartTextInput();
+                SDL_Event evt;
+                evt.type = TDE_EVENT_CMD_INPUT;
+                evt.user.timestamp = SDL_GetTicks();
+                // evt.user.data1 = strBuf;
+                static char szTemp[128];
+                strcpy(szTemp, strBuf);
+                evt.user.data1 = szTemp;
+                SDL_PushEvent(&evt);
+                // printf("\n%s\n", strBuf);
+                //함수로 만들어 놓기
+                // processCmd(strBuf, &bLoop);
+                strBuf[0] = 0x00;
+                // SDL_StopTextInput();
+                nInputFSM = 0;
+            }
+            // printf(">%s\r",strBuf);
+        }
+        else if(_event->type == SDL_TEXTINPUT)
+        {
+            strcat(strBuf, _event->text.text);
+        }
+        
+    }
+
+    
+}
+
+int tDE_util_doTokenize(char *szBuf, char (*szBufToken)[32])
+{
+    //change 10
+    //[change,10]
+    char *szpTemp;
+    //   char *pNextToken = NULL;
+    const char *pszDelimiter = " ";
+    szpTemp = strtok(szBuf, pszDelimiter);
+
+    int _nTokenIndex = 0;
+    while (szpTemp != NULL)
+    {
+        strcpy(szBufToken[_nTokenIndex], szpTemp);
+        _nTokenIndex++;
+        szpTemp = strtok(NULL, pszDelimiter);
+    }
+    return _nTokenIndex;
+}
+
+
