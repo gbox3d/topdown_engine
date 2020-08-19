@@ -7,3 +7,6 @@ CXXFLAGS?=-std=c99 -Wall -pedantic -Werror -Wshadow -Wstrict-aliasing -Wstrict-o
 
 map_editor_mac : map_editor.c ../source/core.c ../source/tile.c
 	${CC} -O2 -o $@ $^ ${SDL2FLAGS} ${SDL2IMAGEFLAGS} $(SDL2TTFFLAGS) ${CXXFLAGS}
+
+map_editor_win : map_editor.c ../source/core.c ../source/tile.c
+	gcc -O2 -o $@ $^ -lmingw32 -lSDL2main -lSDL2 -lSDL2_image -lSDL2_ttf 
