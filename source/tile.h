@@ -9,4 +9,12 @@ void tDE_putTile(SDL_Renderer *pRenderer, SDL_Texture *pTex,
              Uint16 tile_size,
              Uint16 tile_set_width,
              Uint16 zoom);
+
+void tDE_map_put(Uint16 x, Uint16 y, Sint16 nTile, Sint16 *map, Uint16 map_size);
+
+void tDE_map_drawall(SDL_Renderer *pRender, SDL_Texture *pTileSet, int tile_size,
+               int tileset_width,
+               int zoom,
+               int x, int y, int map_size, Sint16 *map);
+               
 #endif

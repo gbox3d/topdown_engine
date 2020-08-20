@@ -21,7 +21,46 @@ void tDE_putTile(SDL_Renderer *pRenderer, SDL_Texture *pTex,
   SDL_RenderCopy(pRenderer, pTex, &_tmpSrcRt, &_tmpDstRt);
 }
 
-void tDE_putMap(Uint16 x, Uint16 y, Sint16 nTile, Sint16 *map, Uint16 map_size)
+// void tDE_putMap(Uint16 x, Uint16 y, Sint16 nTile, Sint16 *map, Uint16 map_size)
+// {
+//   // int _x = (_event.motion.x) / 32;
+//   // int _y = (_event.motion.y) / 32;
+
+//   if (x < map_size && y < map_size)
+//   {
+//     int _tileIndex = y * map_size + x;
+//     map[_tileIndex] = nTile;
+//   }
+// }
+
+// void tDE_drawWorld(SDL_Renderer *pRender, SDL_Texture *pTileSet, int tile_size,
+//                int tileset_width,
+//                int zoom,
+//                int x, int y, int map_size, Sint16 *map)
+// {
+//   for (int i = 0; i < 64; i++)
+//   {
+//     Sint16 _index = map[i];
+//     if (_index != -1)
+//     {
+//       tDE_putTile(pRender, pTileSet, i % map_size, i / map_size,
+//               _index, tile_size, tileset_width, zoom);
+//     }
+//   }
+// }
+
+SDL_bool tDE_map_load(const char *filename, Sint16 *map)
+{
+  SDL_RWops *rw = SDL_RWFromFile(filename, "rb");
+  if (!rw)
+    return SDL_FALSE;
+  SDL_RWread(rw, map, sizeof(Uint16), 64);
+  SDL_RWclose(rw);
+
+  return SDL_TRUE;
+}
+
+void tDE_map_put(Uint16 x, Uint16 y, Sint16 nTile, Sint16 *map, Uint16 map_size)
 {
   // int _x = (_event.motion.x) / 32;
   // int _y = (_event.motion.y) / 32;
@@ -33,12 +72,12 @@ void tDE_putMap(Uint16 x, Uint16 y, Sint16 nTile, Sint16 *map, Uint16 map_size)
   }
 }
 
-void tDE_drawWorld(SDL_Renderer *pRender, SDL_Texture *pTileSet, int tile_size,
+void tDE_map_drawall(SDL_Renderer *pRender, SDL_Texture *pTileSet, int tile_size,
                int tileset_width,
                int zoom,
                int x, int y, int map_size, Sint16 *map)
 {
-  for (int i = 0; i < 64; i++)
+  for (int i = 0; i < (map_size*map_size); i++)
   {
     Sint16 _index = map[i];
     if (_index != -1)
@@ -47,15 +86,4 @@ void tDE_drawWorld(SDL_Renderer *pRender, SDL_Texture *pTileSet, int tile_size,
               _index, tile_size, tileset_width, zoom);
     }
   }
-}
-
-SDL_bool loadMap(const char *filename, Sint16 *map)
-{
-  SDL_RWops *rw = SDL_RWFromFile(filename, "rb");
-  if (!rw)
-    return SDL_FALSE;
-  SDL_RWread(rw, map, sizeof(Uint16), 64);
-  SDL_RWclose(rw);
-
-  return SDL_TRUE;
 }
