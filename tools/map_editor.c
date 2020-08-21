@@ -54,7 +54,7 @@ void render()
             SDL_RenderDrawLine(pRender, 0, iy * 16, 256, iy * 16);
         }
 
-        //속성멥 그리기 
+        //속성멥 그리기
         for (int i = 0; i < 256; i++)
         {
             SDL_SetRenderDrawBlendMode(pRender, SDL_BLENDMODE_BLEND);
@@ -63,25 +63,25 @@ void render()
             if (_index == 1) //벽
             {
                 SDL_SetRenderDrawColor(pRender, 0xff, 0xff, 0xff, 0x80);
-                
+
                 SDL_RenderFillRect(pRender, &_rt);
             }
             else if (_index == 2) //비상구
             {
                 SDL_SetRenderDrawColor(pRender, 0x00, 0xff, 0x00, 0x80);
-                
+
                 SDL_RenderFillRect(pRender, &_rt);
             }
             else if (_index == 3) //숨겨진문
             {
                 SDL_SetRenderDrawColor(pRender, 0xff, 0x00, 0x00, 0x80);
-                
+
                 SDL_RenderFillRect(pRender, &_rt);
             }
             else if (_index == 4) //switch
             {
                 SDL_SetRenderDrawColor(pRender, 0xff, 0xff, 0x00, 0x80);
-                
+
                 SDL_RenderFillRect(pRender, &_rt);
             }
 
@@ -110,12 +110,12 @@ void processEvent()
             if (_event.button.button == 1)
             {
 
-                if (SDL_PointInRect(&m_pt, &worldmap_rect) )
+                if (SDL_PointInRect(&m_pt, &worldmap_rect))
                 {
                     // printf("drag %d\n",m_pt.x);
-                    if(!g_bDrawGrid)
+                    if (!g_bDrawGrid)
                         tDE_map_put((m_pt.x - worldmap_rect.x) / 16, (m_pt.y - worldmap_rect.y) / 16, g_nSelectTileIndex, g_worldMap_Layer, 16);
-                    else 
+                    else
                         tDE_map_put((m_pt.x - worldmap_rect.x) / 16, (m_pt.y - worldmap_rect.y) / 16, g_nCurrentAttr, g_attrMap_Layer, 16);
                 }
             }
@@ -154,10 +154,9 @@ void processEvent()
                     int _y = (_event.motion.y - worldmap_rect.y) / 16;
                     if (!g_bDrawGrid)
                         tDE_map_put(_x, _y, g_nSelectTileIndex, g_worldMap_Layer, 16);
-                    else 
+                    else
                         tDE_map_put(_x, _y, g_nCurrentAttr, g_attrMap_Layer, 16);
                 }
-                
             }
             else if (_event.button.button == 3) //마우스 우클릭
             {
@@ -251,23 +250,39 @@ void processEvent()
                 void *pData = (char *)_event.user.data1 + 16;
                 printf("version %d\n", *(Uint16 *)pData);
             }
-            if (!strcmp(_event.user.data1, "brush"))
+            else if (!strcmp(_event.user.data1, "brush"))
             {
                 char *pData = (char *)_event.user.data1 + 16;
 
                 Uint16 cmd = *(Uint16 *)pData;
-                Uint16 value = *(Uint16 *)(pData+2);
+                Uint16 value = *(Uint16 *)(pData + 2);
 
-                if(cmd==1) //change
+                if (cmd == 1) //change
                 {
                     g_nCurrentAttr = value;
                 }
 
                 printf("attr %d\n", g_nCurrentAttr);
-                // printf("cmd %d\n", *(Uint16 *)pData);
-                // printf("value %d\n", *(Uint16 *)(pData+2));
             }
+            else if (strcmp(_event.user.data1, "save") == 0)
+            {
+                char *pFileName = ((char *)_event.user.data1 + 16);
+                Sint16 *map[2] = {g_worldMap_Layer, g_attrMap_Layer};
+                tDE_map_save(pFileName, map,256);
 
+                printf("save file name %s \n", pFileName);
+            }
+            else if (strcmp(_event.user.data1, "load") == 0)
+            {
+                char *pFileName = ((char *)_event.user.data1 + 16);
+                Sint16 *map[2] = {g_worldMap_Layer, g_attrMap_Layer};
+                tDE_map_load(pFileName, map,256);
+            }
+            else if (strcmp(_event.user.data1, "new") == 0)
+            {
+                memset(g_worldMap_Layer, -1, 256);
+                memset(g_attrMap_Layer, 0, 256);
+            }
             else
             {
                 printf("unknown : %s \n", _event.user.data1);

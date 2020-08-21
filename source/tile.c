@@ -49,12 +49,37 @@ void tDE_putTile(SDL_Renderer *pRenderer, SDL_Texture *pTex,
 //   }
 // }
 
-SDL_bool tDE_map_load(const char *filename, Sint16 *map)
+// SDL_bool tDE_map_load(const char *filename, Sint16 *map)
+// {
+//   SDL_RWops *rw = SDL_RWFromFile(filename, "rb");
+//   if (!rw)
+//     return SDL_FALSE;
+//   SDL_RWread(rw, map, sizeof(Uint16), 64);
+//   SDL_RWclose(rw);
+
+//   return SDL_TRUE;
+// }
+
+
+SDL_bool tDE_map_load(const char *filename, Sint16 *map[2],int data_size)
 {
   SDL_RWops *rw = SDL_RWFromFile(filename, "rb");
   if (!rw)
     return SDL_FALSE;
-  SDL_RWread(rw, map, sizeof(Uint16), 64);
+  SDL_RWread(rw, map[0], sizeof(Uint16), data_size);
+  SDL_RWread(rw, map[1], sizeof(Uint16), data_size);
+  SDL_RWclose(rw);
+
+  return SDL_TRUE;
+}
+
+SDL_bool tDE_map_save(const char *filename, Sint16 *map[2],int data_size)
+{
+  SDL_RWops *rw = SDL_RWFromFile(filename, "wb");
+  if (!rw)
+    return SDL_FALSE;
+  SDL_RWwrite(rw, map[0], sizeof(Uint16), data_size);
+  SDL_RWwrite(rw, map[1], sizeof(Uint16), data_size);
   SDL_RWclose(rw);
 
   return SDL_TRUE;

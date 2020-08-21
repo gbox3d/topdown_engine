@@ -1,4 +1,8 @@
+#include <stdio.h>
+#include <memory.h>
+#include <stdlib.h>
 #include "cmd_parser.h"
+
 
 #define MAX_TOKEN_SIZE 32
 
@@ -38,23 +42,11 @@ void parseCmd(char *_szCmd)
     evt.type = SDL_QUIT;
     evt.quit.timestamp = SDL_GetTicks();
     SDL_PushEvent(&evt);
-  }
-  // else if (strcmp(szTokens[0], "setTile") == 0)
-  // {
-  //   //setTile x y index
-  //   int _x = SDL_atoi(szTokens[1]);
-  //   int _y = SDL_atoi(szTokens[2]);
-  //   int _index = SDL_atoi(szTokens[3]);
-
-  //   g_worldMap_Layer_1[(_y * 8) + _x] = _index;
-  // }
+  }  
   else if (strcmp(szTokens[0], "save") == 0)
   {
     //save file.map
-    char *pFileName = szTokens[1];
-    // SDL_RWops *rw = SDL_RWFromFile(pFileName, "wb");
-    // SDL_RWwrite(rw, g_worldMap_Layer[0], sizeof(Uint16), 64);
-    // SDL_RWclose(rw);
+    char *pFileName = szTokens[1];    
 
     static char pMsg[32];
     strcpy(pMsg, "save");
