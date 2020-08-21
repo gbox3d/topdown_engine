@@ -43,12 +43,12 @@ void render()
     if (g_bDrawGrid)
     {
         SDL_Renderer *pRender = g_pEngineCore->m_pRender;
-        for (int ix = 0; ix < 8; ix++)
+        for (int ix = 0; ix < 16; ix++)
         {
             SDL_SetRenderDrawColor(pRender, 0xff, 0xff, 0x00, 0xff);
             SDL_RenderDrawLine(pRender, ix * 16, 0, ix * 16, 256);
         }
-        for (int iy = 0; iy < 8; iy++)
+        for (int iy = 0; iy < 16; iy++)
         {
             SDL_SetRenderDrawColor(pRender, 0xff, 0xff, 0x00, 0xff);
             SDL_RenderDrawLine(pRender, 0, iy * 16, 256, iy * 16);
@@ -138,17 +138,13 @@ void processEvent()
                 // SDL_GetMouseState(&mx, &my);
 
                 //팔래트처리
-                if (SDL_PointInRect(&mouse_point, &tiltPalette_rect) && !g_bDrawGrid)
+                if (SDL_PointInRect(&mouse_point, &tiltPalette_rect))
                 {
                     int _x = (_event.motion.x - tiltPalette_rect.x) / 16;
                     int _y = (_event.motion.y - tiltPalette_rect.y) / 16;
                     g_nSelectTileIndex = _y * 10 + _x;
-
-                    // printf("%4d%4d%4d %4d%4d\r", _x, _y, g_nSelectTileIndex,
-                    //        _event.motion.x,
-                    //        _event.motion.y);
                 }
-                else if (SDL_PointInRect(&mouse_point, &worldmap_rect) && !g_bDrawGrid)
+                else if (SDL_PointInRect(&mouse_point, &worldmap_rect))
                 {
                     int _x = (_event.motion.x - worldmap_rect.x) / 16;
                     int _y = (_event.motion.y - worldmap_rect.y) / 16;
@@ -160,11 +156,14 @@ void processEvent()
             }
             else if (_event.button.button == 3) //마우스 우클릭
             {
-                if (SDL_PointInRect(&mouse_point, &worldmap_rect) && !g_bDrawGrid)
+                if (SDL_PointInRect(&mouse_point, &worldmap_rect))
                 {
                     int _x = (_event.motion.x - worldmap_rect.x) / 16;
                     int _y = (_event.motion.y - worldmap_rect.y) / 16;
-                    tDE_map_put(_x, _y, -1, g_worldMap_Layer, 16);
+                    if(!g_bDrawGrid)
+                        tDE_map_put(_x, _y, -1, g_worldMap_Layer, 16);
+                    if(g_bDrawGrid)
+                        tDE_map_put(_x, _y, 0, g_attrMap_Layer, 16);
                 }
             }
         }
@@ -280,8 +279,8 @@ void processEvent()
             }
             else if (strcmp(_event.user.data1, "new") == 0)
             {
-                memset(g_worldMap_Layer, -1, 256);
-                memset(g_attrMap_Layer, 0, 256);
+                memset(g_worldMap_Layer, -1, sizeof(Sint16) * 256);
+                memset(g_attrMap_Layer, 0, sizeof(Sint16) * 256);
             }
             else
             {
