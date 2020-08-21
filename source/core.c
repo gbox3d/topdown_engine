@@ -22,6 +22,10 @@ tDE_S_Core *tDE_setup_1(const char *szTitle, int WINDOW_WIDTH, int WINDOW_HEIGHT
     // creates a renderer to render our images
     pCore->m_pRender = SDL_CreateRenderer(pCore->m_pWin, -1, SDL_RENDERER_ACCELERATED);
 
+    pCore->m_nScreenWidth = WINDOW_WIDTH;
+    pCore->m_nScreenHeight = WINDOW_HEIGHT;
+
+
     //Initialize PNG loading
     if (!(IMG_Init(IMG_INIT_PNG) & IMG_INIT_PNG))
     {
