@@ -46,12 +46,25 @@ typedef struct __core
 } tDE_S_Core;
 
 
+
 tDE_S_Core *tDE_setup_1(const char *szTitle,int WINDOW_WIDTH,int WINDOW_HEIGHT,Uint32 flags );
 void tDE_closeCore(tDE_S_Core *pCore);
 
 SDL_Texture *tDE_util_loadTexture(tDE_S_Core *pCore, const char *filename);
 int tDE_util_doTokenize(char *szBuf, char (*szBufToken)[32]);
 void tDE_core_doCmdInput(SDL_Event *_event);
+
+//sprite parser 
+typedef struct __s_sheet_data
+{
+  char szName[32];
+  SDL_Rect m_area;
+} tDE_S_SheetData;
+SDL_bool tDE_util_parseSheet(char *szStr, tDE_S_SheetData *pData);
+
+SDL_Texture *tDE_util_createTextTexture(SDL_Renderer *pRenderer,
+                                        TTF_Font *pFont, const char *text,
+                                        SDL_Rect *ptextRect);
 
 
 #endif

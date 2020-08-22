@@ -8,7 +8,7 @@
 
 static char pMsgBuf[256];
 
-int doTokenize(char *szBuf, char (*szBufToken)[MAX_TOKEN_SIZE])
+int doTokenize(char *szBuf, char szBufToken[8][512])
 {
   char *szpTemp;
   // char *pNextToken = NULL;
@@ -27,8 +27,8 @@ int doTokenize(char *szBuf, char (*szBufToken)[MAX_TOKEN_SIZE])
 
 void parseCmd(char *_szCmd)
 {
-  static char szCmd[64];
-  static char szTokens[8][32];
+  static char szCmd[1024];
+  static char szTokens[8][512];
 
   strcpy(szCmd, _szCmd);
 
@@ -127,6 +127,25 @@ void parseCmd(char *_szCmd)
     evt.user.timestamp = SDL_GetTicks();
     SDL_PushEvent(&evt);
 
+  }
+  else if (strcmp(szTokens[0], "setText") == 0)
+  {
+    static char szBuf[128];
+    szBuf[0] = 0x00;
+    for(int i=1;i<_numToken;i++)
+    {
+      strcat(szBuf," ");
+      strcat(szBuf,szTokens[i]);    
+    }
+    strcpy(pMsgBuf,szTokens[0]);
+    strcpy(pMsgBuf+16, szBuf);
+
+    SDL_Event evt;
+    evt.type = SDL_USEREVENT;
+    evt.user.data1 = pMsgBuf;
+    evt.user.code = CMD_PARSER_CODE;
+    evt.user.timestamp = SDL_GetTicks();
+    SDL_PushEvent(&evt);
   }
   else 
   {
