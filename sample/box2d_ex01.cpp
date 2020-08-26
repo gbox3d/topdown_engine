@@ -1,7 +1,7 @@
 #include <stdio.h>
 
-#include "../box2d/include/box2d/b2_math.h"
-#include "../box2d/include/box2d/b2_settings.h"
+#include "../source/box2d/include/box2d/b2_math.h"
+#include "../source/box2d/include/box2d/b2_settings.h"
 
 int main(int argc, char **argv)
 {
