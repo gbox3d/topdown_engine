@@ -13,3 +13,4 @@ out/
 .vs/
 Debug/
 Release/
+box2d/
